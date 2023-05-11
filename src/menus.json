@@ -1,0 +1,31 @@
+{
+  "Menus": [
+    {
+      "menuName": "Accesos Rapidos",
+      "subMenu": ["Comunicados y Circulares", "Agenda Semanal", "Sedes"]
+    },
+    {
+      "menuName": "Nuestro Colegio",
+      "subMenu": [
+        {
+          "menuItem": "Horizonte Institucional",
+          "itemsSubmenu": [
+            "Misión",
+            "Visión",
+            "Valores",
+            "Politica de Calidad",
+            "Procedimiento para atender situaciones de convivencia"
+          ]
+        },
+        {
+            "menuItem": "Símbolos",
+            "itemsSubmenu": [
+              "Bandera",
+              "Escudo",
+              "Himno"
+            ]
+          }
+      ]
+    }
+  ]
+}
