@@ -46,7 +46,7 @@
   }
 </script>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="sticky-top navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#!">Instituto Educativo</a>
   <button
     class="navbar-toggler"

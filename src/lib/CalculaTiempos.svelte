@@ -1,6 +1,8 @@
 <script lang="ts">
   import moment from "moment";
-  import { onMount } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
+  import { Tab } from "bootstrap";
+  import Individuales from "./Individuales.svelte";
 
   // Función para calcular el tiempo transcurrido entre "Inicia" y "Finaliza"
   function calcularTiempoTranscurrido(json) {
@@ -39,6 +41,8 @@
             asignatura: inicia.asignatura,
             grado: inicia.grado,
             tiempoTranscurrido: tiempoTranscurrido,
+            nombres: inicia.nombres,
+            fecha: inicia.fecha,
           });
         }
       });
@@ -76,23 +80,87 @@
 [{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"8-1","hora":"07","minuto":"25","tiempo":"Inicia"},{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"8-1","hora":"7","minuto":"50","tiempo":"Finaliza"},{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"8-1","hora":"7","minuto":"52","tiempo":"Finaliza"},{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"6-1","hora":"07","minuto":"53","tiempo":"Inicia"},{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"6-2","hora":"10","minuto":"45","tiempo":"Inicia"},{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"6-2","hora":"10","minuto":"55","tiempo":"Finaliza"},{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"6-2","hora":"13","minuto":"00","tiempo":"Inicia"},{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"6-2","hora":"13","minuto":"11","tiempo":"Finaliza"},{"fecha":"2023-05-10","docente":"10288864","asignatura":"TECNOLOG","grado":"6-2","hora":"13","minuto":"22","tiempo":"Finaliza"}]
 `); */
   let resultados;
+
   onMount(() => {
+    resultados = calcularTiempoTranscurrido(json);
+  });
+  afterUpdate(() => {
     resultados = calcularTiempoTranscurrido(json);
     console.log(resultados);
   });
 
-  let total:number;
-  let res:any;
-  $:if(resultados&&resultados.length>0) {
-    res=[...resultados.filter(r=>r.tiempoTranscurrido>0 && r.tiempoTranscurrido<35)]
+  let total: number;
+  let res: any;
+  $: if (resultados && resultados.length > 0) {
+    res = [
+      ...resultados.filter(
+        (r) => r.tiempoTranscurrido > 0 && r.tiempoTranscurrido < 35
+      ),
+    ];
   }
 
-$:if(res&&res.length>0)
-total=res.reduce((a,b)=>a+b.tiempoTranscurrido,0)
+  $: if (res && res.length > 0)
+    total = res.reduce((a, b) => a + b.tiempoTranscurrido, 0);
+
+  $: console.log(res);
+
+  let tabTrigger;
+  const tab = (node) => {
+    if (!tabTrigger) tabTrigger = new Tab(node);
+  };
 </script>
 
-{#if resultados}
-<h3>{JSON.stringify(res)}</h3>
-<h1>Total: {total} minutos</h1>
+<div class="container-md">
+  <nav use:tab>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button
+        class="nav-link active"
+        id="nav-consolidado-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-consolidado"
+        type="button"
+        role="tab"
+        aria-controls="nav-consolidado"
+        aria-selected="true">Consolidado</button
+      >
+      <button
+        class="nav-link"
+        id="nav-resultados-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-resultados"
+        type="button"
+        role="tab"
+        aria-controls="nav-resultados"
+        aria-selected="false">Resultados</button
+      >
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div
+      class="tab-pane fade show active"
+      id="nav-consolidado"
+      role="tabpanel"
+      aria-labelledby="nav-consolidado-tab"
+      tabindex="0"
+    >
+      ...
+    </div>
+    <div
+      class="tab-pane fade"
+      id="nav-resultados"
+      role="tabpanel"
+      aria-labelledby="nav-resultados-tab"
+      tabindex="0"
+    >
+      <Individuales {resultados} {res} {total}/> 
+    </div>
+  </div>
+</div>
 
-{/if}
+
+<style>
+   .tab-content {
+      overflow: auto;
+      height: 300px; /* Ajusta la altura según tus necesidades */
+    }
+</style>
