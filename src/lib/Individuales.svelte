@@ -1,12 +1,9 @@
-<script lang="ts">
-  export let resultados: any;
-  export let total: number;
-  export let res: any;
-
-  function convertir(minutos) {
-    var dias = Math.floor(minutos / 1440); // 1 día tiene 1440 minutos (24 horas x 60 minutos)
-    var horas = Math.floor((minutos % 1440) / 60); // El residuo después de restar los días se divide por 60 para obtener las horas
-    var minutosRestantes = minutos % 60; // El residuo después de dividir por 60 son los minutos restantes
+<script context="module" lang="ts">
+  export function convertir(minutos) {
+    console.log({minutos})
+    const dias = Math.floor(minutos / 1440); // 1 día tiene 1440 minutos (24 horas x 60 minutos)
+    const horas = Math.floor((minutos % 1440) / 60); // El residuo después de restar los días se divide por 60 para obtener las horas
+    const minutosRestantes = minutos % 60; // El residuo después de dividir por 60 son los minutos restantes
 
     var resultado = "";
 
@@ -25,6 +22,12 @@
 
     return resultado.trim();
   }
+</script>
+
+<script lang="ts">
+  export let resultados: any;
+  export let total: number;
+  export let res: any;
 </script>
 
 {#if resultados && resultados.length > 0 && total}
@@ -49,7 +52,7 @@
         {fecha}
       </div>
       <div class="item text-end">
-        {tiempoTranscurrido}'
+        {convertir(tiempoTranscurrido)}
       </div>
     {/each}
   </div>

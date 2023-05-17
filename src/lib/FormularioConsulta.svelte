@@ -10,14 +10,14 @@
 
   
   let docente:string;
-  let todos:boolean=false;
-  let td:boolean=false;
+  let todos:boolean=true;
+  let td:boolean=true;
 
   const dispatch=createEventDispatcher();
 
 const consultar=()=>{
     const todos:boolean=docente===""&&td?false:true;
-    dispatch('select', {todos:!todos,docente,fecha1,fecha2});
+    dispatch('select', {todos,docente,fecha1,fecha2});
 
 }
 $:console.log(todos)

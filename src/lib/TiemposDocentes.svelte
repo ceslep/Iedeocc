@@ -53,12 +53,7 @@
 
   const tiempos = async () => {
     _tiempos = await getData();
-    const asignaturas = new Set(
-      _tiempos.map((t) => {
-        const { grado, asignatura, tiempo,nombres } = t;
-        return { grado, asignatura ,nombres};
-      })
-    );
+
     const dcnts: docentes = _tiempos
       .filter(
         (t, i, a) =>
@@ -74,39 +69,44 @@
       .sort((a, b) => (a.nombres < b.nombres ? -1 : 1));
     _docentes = [...dcnts];
     console.log({ _tiempos });
-    console.log({ asignaturas });
     console.log(_docentes);
+    console.log({ doc });
+    const fe1: Date = new Date(f1);
+    const fe2: Date = new Date(f2);
+    console.log({ doc, f1, f2 });
+    console.log({todos})
+    _tdocs = [
+      ..._tiempos.filter((t) => {
+        const fecha = new Date(t.fecha);
+        let r:boolean;
+        if (!todos)
+          return t.docente === doc && fecha >= fe1 && fecha <= fe2;
+        else  return fecha >= fe1 && fecha <= fe2;
+      }),
+    ];
+    console.log(_tdocs);
   };
-  
+
   onMount(() => {
     tiempos();
   });
 
-  let doc: string;
-  let f1: string;
-  let f2: string;
-  let todos: boolean;
+  const fechaActual = new Date();
 
-  $: {
-    _tdocs = _tiempos&&[
-      ..._tiempos.filter((t) => {
-        const fecha = new Date(t.fecha);
-        const fe1: Date = new Date(f1);
-        const fe2: Date = new Date(f2);
-        if (!todos) return t.docente === doc && fecha >= fe1 && fecha <= fe2;
-        else return fecha >= fe1 && fecha <= fe2;
-      }),
-    ];
-    console.log(_tdocs);
-  }
+  let f1: string = fechaActual.toISOString().split("T")[0];
+  let f2: string = fechaActual.toISOString().split("T")[0];
 
+  let doc: string = "";
+  let todos: boolean = true;
 
-  $:console.log(todos);
-  $:console.log(_tdocs)
+  $: console.log(_tdocs);
   //$:if(todos) doc="";
 </script>
 
-<nav class="sticky-top bg-body-tertiary bg-light navbar" style="background-color: #e3f2fd;">
+<nav
+  class="sticky-top bg-body-tertiary bg-light navbar"
+  style="background-color: #e3f2fd;"
+>
   <div class="container">
     <!-- Navbar content -->
     <ul class="navbar-nav">
@@ -127,15 +127,18 @@
     {_docentes}
     on:select={(e) => {
       console.clear();
-      console.log(e.detail)
+      console.log(e.detail);
       doc = e.detail.docente;
       f1 = e.detail.fecha1;
       f2 = e.detail.fecha2;
-      todos=e.detail.todos;
-    }}
-    on:consultar={()=>{
-      _docentes=[];
+      todos = e.detail.todos;
+      _tdocs = [];
       tiempos();
+    }}
+    on:consultar={async () => {
+      _docentes = [];
+      _tdocs = [];
+      await tiempos();
     }}
   />
 {:else}

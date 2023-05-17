@@ -1,6 +1,5 @@
 import './app.css'
-import './scss/styles.scss';
-
+import 'bootswatch/dist/vapor/bootstrap.min.css';
 
 // Import all of Bootstrap's JS
 import * as bootstrap from 'bootstrap';
