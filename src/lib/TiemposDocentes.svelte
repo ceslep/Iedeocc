@@ -30,12 +30,12 @@
   let _tiempos: tiempos;
   let _docentes: docentes = [];
   let _tdocs: tiempos = [];
-  let docente = "10288864";
 
   const getData = async (): Promise<tiempos> => {
-    const { data }: any = await axios.post(`${$_URL}getTiemposDocentes.php`, {
-      docente,
-    });
+    const { data }: any = await axios.post(
+      `${$_URL}getTiemposDocentes.php`,
+      {}
+    );
     const _tiempos: tiempos = data.map((t: objetoTiempos) => {
       return {
         fecha: t.fecha,
@@ -74,14 +74,13 @@
     const fe1: Date = new Date(f1);
     const fe2: Date = new Date(f2);
     console.log({ doc, f1, f2 });
-    console.log({todos})
+    console.log({ todos });
     _tdocs = [
       ..._tiempos.filter((t) => {
         const fecha = new Date(t.fecha);
-        let r:boolean;
-        if (!todos)
-          return t.docente === doc && fecha >= fe1 && fecha <= fe2;
-        else  return fecha >= fe1 && fecha <= fe2;
+        let r: boolean;
+        if (!todos) return t.docente === doc && fecha >= fe1 && fecha <= fe2;
+        else return fecha >= fe1 && fecha <= fe2;
       }),
     ];
     console.log(_tdocs);
@@ -91,10 +90,20 @@
     tiempos();
   });
 
-  const fechaActual = new Date();
+  const convertirFecha = (fecha) => {
+  const partes = fecha.split('/');
+  const dia = partes[0].padStart(2, '0'); // Añade cero al día si es menor que 10
+  const mes = partes[1].padStart(2, '0'); // Añade cero al mes si es menor que 10
+  const anio = partes[2];
+  const fechaISO = `${anio}-${mes}-${dia}`;
+  return (fechaISO);
+}
 
-  let f1: string = fechaActual.toISOString().split("T")[0];
-  let f2: string = fechaActual.toISOString().split("T")[0];
+
+  const fechaActual = (new Date()).toLocaleDateString('es-CO', {})
+
+  let f1: string = convertirFecha(fechaActual);
+  let f2: string = convertirFecha(fechaActual);
 
   let doc: string = "";
   let todos: boolean = true;
