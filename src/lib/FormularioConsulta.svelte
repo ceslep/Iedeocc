@@ -1,16 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import { type objetoDocentes } from "./TiemposDocentes.svelte";
+  import { type objetoDocentes,convertirFecha } from "./TiemposDocentes.svelte";
 
-  const convertirFecha = (fecha) => {
-    const partes = fecha.split("/");
-    const dia = partes[0].padStart(2, "0"); // Añade cero al día si es menor que 10
-    const mes = partes[1].padStart(2, "0"); // Añade cero al mes si es menor que 10
-    const anio = partes[2];
-    const fechaISO = `${anio}-${mes}-${dia}`;
-    console.log(fechaISO);
-    return fechaISO;
-  };
+  
 
   const fechaActual = new Date().toLocaleDateString("es-CO", {});
   console.log(fechaActual);

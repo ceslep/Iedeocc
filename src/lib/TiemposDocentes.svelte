@@ -17,6 +17,15 @@
     identificacion: string;
     nombres: string;
   }
+
+  export  const convertirFecha = (fecha) => {
+  const partes = fecha.split('/');
+  const dia = partes[0].padStart(2, '0'); // Añade cero al día si es menor que 10
+  const mes = partes[1].padStart(2, '0'); // Añade cero al mes si es menor que 10
+  const anio = partes[2];
+  const fechaISO = `${anio}-${mes}-${dia}`;
+  return (fechaISO);
+}
 </script>
 
 <script lang="ts">
@@ -90,14 +99,7 @@
     tiempos();
   });
 
-  const convertirFecha = (fecha) => {
-  const partes = fecha.split('/');
-  const dia = partes[0].padStart(2, '0'); // Añade cero al día si es menor que 10
-  const mes = partes[1].padStart(2, '0'); // Añade cero al mes si es menor que 10
-  const anio = partes[2];
-  const fechaISO = `${anio}-${mes}-${dia}`;
-  return (fechaISO);
-}
+ 
 
 
   const fechaActual = (new Date()).toLocaleDateString('es-CO', {})
