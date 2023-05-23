@@ -137,7 +137,7 @@
   <FormularioConsulta
     {_docentes}
     on:select={(e) => {
-      console.clear();
+  //    console.clear();
       console.log(e.detail);
       doc = e.detail.docente;
       f1 = e.detail.fecha1;

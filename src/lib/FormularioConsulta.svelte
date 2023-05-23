@@ -18,7 +18,8 @@
   const dispatch = createEventDispatcher();
 
   const consultar = () => {
-    const todos: boolean = docente === "" && td ? false : true;
+    console.log(td)
+    const todos: boolean = docente === "" && td ? true : false;
     dispatch("select", { todos, docente, fecha1, fecha2 });
   };
   $: console.log(todos);
@@ -64,7 +65,7 @@
             id="selectElement"
             name="selectElement"
             on:change={() => {
-              if (docente !== "") td = false;
+              td=docente!==""?false:true;
               consultar();
             }}
           >

@@ -8,6 +8,8 @@
   let _consolidadoDocentes: any;
 
   const calculos = () => {
+    _consolidadoDocentes=[];
+    total=null;
     const grouped = groupBy(res, "nombres");
     console.log({grouped});
     const summedGroups = mapObject(grouped, (group) => {
@@ -27,6 +29,7 @@
     sumaGrupos=calculos();
   });
   afterUpdate(() => {
+   
     sumaGrupos=calculos();
   });
 
@@ -58,6 +61,12 @@
         {convertir(tiempoTotal)}
       </div>
     {/each}
+  </div>
+  {:else}
+  <div class="d-flex justify-content-center pt-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
 {/if}
 
